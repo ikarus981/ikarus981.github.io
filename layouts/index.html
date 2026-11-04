@@ -1,0 +1,26 @@
+{{ define "main" }}
+<section class="profile">
+  {{ with site.Params.avatar }}<div class="avatar"><img src="{{ . | relURL }}" alt="avatar"></div>{{ end }}
+  <h1 class="profile-name">{{ site.Title }}</h1>
+  {{ with site.Params.tagline }}<h2 class="profile-tagline">{{ . }}</h2>{{ end }}
+  {{ with .Content }}<div class="profile-bio">{{ . }}</div>{{ end }}
+  {{ with site.Params.social }}
+  <ul class="social">
+    {{ range . }}
+      <li><a href="{{ .url | relURL }}" aria-label="{{ .name }}">{{ partial "icon.html" .name }}</a></li>
+    {{ end }}
+  </ul>
+  {{ end }}
+</section>
+
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- with $posts }}
+<section class="home-posts">
+  <h2 class="section-title">Latest posts</h2>
+  <div class="cards">
+    {{ range first 5 . }}{{ partial "post-card.html" (dict "page" . "heading" "h3") }}{{ end }}
+  </div>
+  {{ if gt (len $posts) 5 }}<p class="more"><a href="{{ "/posts/" | relURL }}">All posts →</a></p>{{ end }}
+</section>
+{{- end }}
+{{ end }}

@@ -1,0 +1,7 @@
+/index.xml /  302
+
+/posts /posts/ 301
+/posts/:slug /posts/:slug/ 301
+/tags /tags/ 301
+/tags/:term /tags/:term/ 301
+/about /about/ 301

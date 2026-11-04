@@ -1,0 +1,8 @@
+<header class="site-header">
+  <a class="brand" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+  <nav class="site-nav">
+    {{ range site.Menus.main }}
+      <a href="{{ .URL | relURL }}">{{ .Name }}</a>
+    {{ end }}
+  </nav>
+</header>

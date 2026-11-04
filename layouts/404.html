@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "en" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>404 · {{ site.Title }}</title>
+  {{ partial "css.html" . }}
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <main class="content center">
+    <div class="notfound">
+      <h1 class="nf-code">404</h1>
+      <p class="nf-msg">This page doesn't exist.</p>
+      <p class="nf-home"><a href="{{ site.Home.RelPermalink }}">← Back home</a></p>
+    </div>
+  </main>
+  {{ partial "footer.html" . }}
+</body>
+</html>

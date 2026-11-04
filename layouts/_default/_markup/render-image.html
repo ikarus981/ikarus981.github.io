@@ -1,0 +1,21 @@
+{{- $src := .Destination -}}
+{{- $alt := .Text -}}
+{{- $caption := .Title -}}
+{{- with .Page.Resources.GetMatch $src -}}
+  {{- $img := . -}}
+  {{- $webp := $img.Process "webp q92" -}}
+  {{- $webp = resources.Copy (printf "img/%s" (path.Base $webp.RelPermalink)) $webp -}}
+<figure class="post-figure">
+  <a class="zoom-link" href="{{ $webp.RelPermalink }}" target="_blank" rel="noopener">
+    <img src="{{ $webp.RelPermalink }}" alt="{{ $alt }}" loading="lazy" decoding="async" width="{{ $webp.Width }}" height="{{ $webp.Height }}">
+  </a>
+  {{- with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
+{{- else -}}
+<figure class="post-figure">
+  <a class="zoom-link" href="{{ $src }}" target="_blank" rel="noopener">
+    <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  </a>
+  {{- with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
+{{- end -}}

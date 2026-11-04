@@ -1,0 +1,98 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1e20">
+
+{{- $title := site.Title -}}
+{{- if not .IsHome }}{{ $title = printf "%s · %s" .Title site.Title }}{{ end -}}
+
+{{- $desc := site.Params.description -}}
+{{- if .Description -}}
+  {{- $desc = .Description -}}
+{{- else if and .IsPage .Summary -}}
+  {{- $desc = .Summary | plainify | truncate 160 -}}
+{{- end -}}
+
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ site.Params.author }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- $ogImage := "" -}}
+{{- with .Params.og_image }}{{ $ogImage = . | absURL }}{{ end -}}
+{{- if and (not $ogImage) .Params.cover -}}
+  {{- with $.Resources.GetMatch .Params.cover -}}
+    {{- $og := .Fill "1200x630 Center jpg q90" -}}
+    {{- $og = resources.Copy (printf "img/%s" (path.Base $og.RelPermalink)) $og -}}
+    {{- $ogImage = $og.Permalink -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $ogImage }}{{ $ogImage = "og-default.jpg" | absURL }}{{ end -}}
+
+<link rel="icon" href="{{ "avatar.svg" | relURL }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ "profile.png" | relURL }}">
+
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:locale" content="en_US">
+{{- with $ogImage }}
+<meta property="og:image" content="{{ . }}">
+<meta property="og:image:secure_url" content="{{ . }}">
+<meta property="og:image:alt" content="{{ if $.IsHome }}{{ site.Title }}{{ else }}{{ $.Title }}{{ end }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+{{- end }}
+{{- if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- with .Lastmod }}
+<meta property="article:modified_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end }}
+{{- with .Params.author }}<meta property="article:author" content="{{ . }}">{{ end }}
+{{- range .Params.tags }}<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}
+
+<meta name="twitter:card" content="{{ if $ogImage }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $desc }}">
+{{- with $ogImage }}<meta name="twitter:image" content="{{ . }}">{{ end }}
+{{- with site.Params.twitter }}
+<meta name="twitter:site" content="{{ . }}">
+<meta name="twitter:creator" content="{{ . }}">
+{{- end }}
+
+{{ partial "css.html" . }}
+
+{{- if .IsPage }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title }},
+  "description": {{ $desc }},
+  "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z07:00" }},
+  "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }},
+  "mainEntityOfPage": {{ .Permalink }},
+  "author": { "@type": "Person", "name": {{ site.Params.author }}, "url": {{ site.BaseURL }} },
+  "publisher": { "@type": "Person", "name": {{ site.Params.author }} }{{ with $ogImage }},
+  "image": {{ . }}{{ end }}
+}
+</script>
+{{- else if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ site.Title }},
+  "description": {{ site.Params.description }},
+  "url": {{ site.BaseURL }},
+  "jobTitle": "Security Researcher",
+  "sameAs": [{{ range $i, $s := site.Params.social }}{{ if $i }}, {{ end }}{{ $s.url }}{{ end }}]
+}
+</script>
+{{- end }}

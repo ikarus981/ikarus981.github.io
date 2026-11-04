@@ -1,0 +1,52 @@
+baseURL = 'https://ikarus981.pages.dev/'
+locale = 'en-US'
+defaultContentLanguage = 'en'
+title = 'ikarus981'
+enableRobotsTXT = true
+copyright = 'ikarus981'
+
+[taxonomies]
+  tag = 'tags'
+
+[params]
+  description = 'Offensive security research: Windows internals, evasion, C2 and vulnerability research.'
+  tagline = 'Security Researcher | Offensive Security & Red Teaming'
+  opengraph = true
+  avatar = 'profile.png'
+  author = 'ikarus981'
+  twitter = '@ikarus981'
+
+  [[params.social]]
+    name = 'github'
+    url = 'https://github.com/ikarus981'
+
+[menu]
+  [[menu.main]]
+    name = 'Home'
+    url = '/'
+    weight = 5
+  [[menu.main]]
+    name = 'Posts'
+    url = '/posts/'
+    weight = 10
+  [[menu.main]]
+    name = 'About'
+    url = '/about/'
+    weight = 15
+
+[outputs]
+  home = ['HTML']
+  section = ['HTML']
+  taxonomy = ['HTML']
+  term = ['HTML']
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    style = 'monokai'
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = true

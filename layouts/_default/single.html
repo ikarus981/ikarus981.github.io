@@ -1,0 +1,46 @@
+{{ define "main" }}
+<article class="post">
+  <a class="back-link" href="{{ "/posts/" | relURL }}">← All posts</a>
+  {{ with .Params.cover }}{{ with $.Resources.GetMatch . }}
+  {{- $sm := .Resize "800x webp q80" -}}
+  {{- $sm = resources.Copy (printf "img/%s" (path.Base $sm.RelPermalink)) $sm -}}
+  {{- $lg := .Resize "1400x webp q75" -}}
+  {{- $lg = resources.Copy (printf "img/%s" (path.Base $lg.RelPermalink)) $lg -}}
+  <img class="post-cover" src="{{ $sm.RelPermalink }}" srcset="{{ $sm.RelPermalink }} 800w, {{ $lg.RelPermalink }} 1400w" sizes="(max-width: 848px) 100vw, 800px" alt="{{ $.Title }}" width="{{ $sm.Width }}" height="{{ $sm.Height }}" decoding="async">
+  {{ end }}{{ end }}
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+    <p class="meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      · {{ .ReadingTime }} min read
+      {{- with .Params.author }} · {{ . }}{{ end }}
+    </p>
+  </header>
+  {{ with .TableOfContents }}<div class="toc"><div class="toc-title">Contents</div>{{ . }}</div>{{ end }}
+  <div class="prose">{{ .Content }}</div>
+
+  {{ with .Params.tags }}
+  <ul class="tags">
+    {{ range . }}<li><a href="{{ printf "/tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a></li>{{ end }}
+  </ul>
+  {{ end }}
+
+  {{ if or .PrevInSection .NextInSection }}
+  <nav class="post-nav">
+    {{ with .PrevInSection }}
+    <a class="post-nav-link prev" href="{{ .RelPermalink }}">
+      <span class="post-nav-label">← Previous</span>
+      <span class="post-nav-title">{{ .Title }}</span>
+    </a>
+    {{ end }}
+    {{ with .NextInSection }}
+    <a class="post-nav-link next" href="{{ .RelPermalink }}">
+      <span class="post-nav-label">Next →</span>
+      <span class="post-nav-title">{{ .Title }}</span>
+    </a>
+    {{ end }}
+  </nav>
+  {{ end }}
+</article>
+{{ end }}

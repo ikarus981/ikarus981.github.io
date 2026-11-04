@@ -1,0 +1,11 @@
+# Hugo build output
+/public/
+/resources/
+/.hugo_build.lock
+
+# OS / editor cruft
+.DS_Store
+*.swp
+
+# Local Cloudflare deploy state
+.wrangler/

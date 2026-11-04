@@ -1,0 +1,9 @@
+{{ define "main" }}
+<h1 class="section-title">{{ .Title }}</h1>
+{{ .Content }}
+<div class="cards">
+  {{ range .Pages.ByDate.Reverse }}
+    {{ partial "post-card.html" (dict "page" . "heading" "h2") }}
+  {{ end }}
+</div>
+{{ end }}

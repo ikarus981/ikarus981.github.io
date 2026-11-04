@@ -1,0 +1,20 @@
+{{- $lang := .Type -}}
+{{- $plain := slice "output" "text" "txt" "log" -}}
+{{- $prompts := dict "bash" "$" "sh" "$" "shell" "$" "zsh" "$" "powershell" "PS>" "ps1" "PS>" "cmd" "C:\\>" -}}
+{{- $prompt := index $prompts $lang -}}
+<div class="codeblock" data-lang="{{ $lang }}">
+  {{- if in $plain $lang -}}
+  <pre><code>{{ .Inner }}</code></pre>
+  {{- else -}}
+  <button class="copy-btn" type="button" aria-label="Copy code" title="Copy">
+    <svg class="i-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+    <svg class="i-done" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </button>
+  {{- $hl := transform.Highlight .Inner $lang -}}
+  {{- if $prompt -}}
+  {{ replace $hl `<span class="line">` (printf `<span class="line"><span class="prompt">%s </span>` (htmlEscape $prompt)) 1 | safeHTML }}
+  {{- else -}}
+  {{ $hl }}
+  {{- end -}}
+  {{- end -}}
+</div>

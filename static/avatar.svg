@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <style>
+    text { fill: #6b6b74 }
+    @media (prefers-color-scheme: dark) { text { fill: #e6e6e8 } }
+  </style>
+  <text x="120" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="118" font-weight="700" text-anchor="middle" dominant-baseline="central">ik</text>
+</svg>

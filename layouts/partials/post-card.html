@@ -1,0 +1,22 @@
+{{- $page := .page -}}
+{{- $h := .heading | default "h3" -}}
+{{- $cover := $page.Resources.GetMatch $page.Params.cover -}}
+<article class="card">
+  <a class="card-link" href="{{ $page.RelPermalink }}">
+    {{- with $cover }}
+    {{- $t1 := .Fill "800x420 Center webp q82" -}}
+    {{- $t1 = resources.Copy (printf "img/%s" (path.Base $t1.RelPermalink)) $t1 -}}
+    {{- $t2 := .Fill "1200x630 Center webp q80" -}}
+    {{- $t2 = resources.Copy (printf "img/%s" (path.Base $t2.RelPermalink)) $t2 -}}
+    <img class="card-cover" src="{{ $t1.RelPermalink }}" srcset="{{ $t1.RelPermalink }} 800w, {{ $t2.RelPermalink }} 1200w" sizes="(max-width: 848px) calc(100vw - 48px), 800px" alt="{{ $page.Title }}" width="{{ $t1.Width }}" height="{{ $t1.Height }}" loading="lazy" decoding="async">
+    {{- end }}
+    <div class="card-body">
+      {{ if eq $h "h2" }}<h2 class="card-title">{{ $page.Title }}</h2>{{ else }}<h3 class="card-title">{{ $page.Title }}</h3>{{ end }}
+      <p class="card-brief">{{ $page.Summary | plainify | truncate 170 }}</p>
+      <p class="meta">
+        <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "Jan 2, 2006" }}</time>
+        · {{ $page.ReadingTime }} min read
+      </p>
+    </div>
+  </a>
+</article>
