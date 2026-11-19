@@ -9,3 +9,4 @@
 
 # Local Cloudflare deploy state
 .wrangler/
+/server.log
