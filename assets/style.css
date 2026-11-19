@@ -235,6 +235,17 @@ main.home { padding-top: 3.5rem; }
 .toc a { display: block; padding: 0.35rem 0; color: var(--content); }
 .toc a:hover { color: var(--primary); }
 
+/* Nested contents read 1, 2, 3 and 3.1, 3.2 instead of restarting at 1 */
+.toc #TableOfContents { counter-reset: toc-section; }
+.toc #TableOfContents ol { list-style: none; padding-left: 0; }
+.toc #TableOfContents > ol > li { counter-increment: toc-section; }
+.toc #TableOfContents > ol > li > a::before { content: counter(toc-section) ". "; }
+.toc #TableOfContents ol ol { counter-reset: toc-sub; padding-left: 1.2rem; }
+.toc #TableOfContents ol ol > li { counter-increment: toc-sub; }
+.toc #TableOfContents ol ol > li > a::before {
+  content: counter(toc-section) "." counter(toc-sub) " ";
+}
+
 /* Tags */
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 2rem 0 0; }
 .tags li a {
